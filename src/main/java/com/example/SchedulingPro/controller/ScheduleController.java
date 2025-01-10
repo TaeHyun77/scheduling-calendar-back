@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -20,6 +21,19 @@ public class ScheduleController {
     public void write_schedule(@RequestBody ScheduleDto scheduleDto, HttpServletRequest request) {
 
         scheduleService.writeSchedule(scheduleDto, request);
+
+    }
+
+    @GetMapping("/schedule/{eventId}")
+    public Schedule getSchedule(@PathVariable("eventId") Long eventId) {
+
+        return scheduleService.getSchedule(eventId);
+    }
+
+    @DeleteMapping("/delete/schedule/{eventId}")
+    public void deleteSchedule(@PathVariable("eventId") Long eventId) {
+
+        scheduleService.scheduleDelete(eventId);
 
     }
 

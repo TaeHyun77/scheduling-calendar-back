@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class UserController {
 
     private final JwtUtil jwtUtil;
 
