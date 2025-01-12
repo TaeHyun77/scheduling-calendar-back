@@ -1,4 +1,4 @@
-package com.example.SchedulingPro.user;
+package com.example.SchedulingPro.entity;
 
 import com.example.SchedulingPro.entity.BaseTime;
 import jakarta.persistence.*;

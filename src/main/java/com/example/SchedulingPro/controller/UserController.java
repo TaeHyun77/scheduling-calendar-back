@@ -1,7 +1,8 @@
 package com.example.SchedulingPro.controller;
 
 import com.example.SchedulingPro.jwt.JwtUtil;
-import com.example.SchedulingPro.user.UserResponseDto;
+import com.example.SchedulingPro.dto.UserResponseDto;
+import com.example.SchedulingPro.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,9 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final JwtUtil jwtUtil;
+    private final UserService userService;
 
     @GetMapping("/info")
-    public ResponseEntity<?> userInfo(HttpServletRequest request) {
+    public ResponseEntity<?>  userInfo(HttpServletRequest request) {
 
         String authorizationHeader = request.getHeader("Authorization");
 

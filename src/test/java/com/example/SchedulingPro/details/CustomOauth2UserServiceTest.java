@@ -1,6 +1,6 @@
 package com.example.SchedulingPro.details;
 
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.User;
 import com.example.SchedulingPro.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

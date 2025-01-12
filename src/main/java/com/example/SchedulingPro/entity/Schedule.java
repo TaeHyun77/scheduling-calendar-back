@@ -1,6 +1,6 @@
-package com.example.SchedulingPro.schedule;
+package com.example.SchedulingPro.entity;
 
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +39,7 @@ public class Schedule {
         this.content = content;
     }
 
-    public void updateSchedule(String title, String place, String startTime, String end, String content) {
+    public void updateSchedule(String title, String place, String start, String end, String content) {
         this.title = title;
         this.place = place;
         this.start = start;
