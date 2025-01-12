@@ -1,14 +1,13 @@
 package com.example.SchedulingPro.controller;
 
-import com.example.SchedulingPro.schedule.Schedule;
-import com.example.SchedulingPro.schedule.ScheduleDto;
+import com.example.SchedulingPro.entity.Schedule;
+import com.example.SchedulingPro.dto.ScheduleDto;
 import com.example.SchedulingPro.service.ScheduleService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -28,6 +27,11 @@ public class ScheduleController {
     public Schedule getSchedule(@PathVariable("eventId") Long eventId) {
 
         return scheduleService.getSchedule(eventId);
+    }
+
+    @PostMapping("/modify/schedule/{eventId}")
+    public void modifySchedule(@PathVariable("eventId") Long eventId, @RequestBody ScheduleDto scheduleDto) {
+        scheduleService.scheduleModify(eventId, scheduleDto);
     }
 
     @DeleteMapping("/delete/schedule/{eventId}")

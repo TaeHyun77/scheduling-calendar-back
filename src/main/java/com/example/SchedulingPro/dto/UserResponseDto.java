@@ -1,4 +1,4 @@
-package com.example.SchedulingPro.user;
+package com.example.SchedulingPro.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

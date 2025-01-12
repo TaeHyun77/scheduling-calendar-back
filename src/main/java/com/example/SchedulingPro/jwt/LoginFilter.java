@@ -2,7 +2,7 @@ package com.example.SchedulingPro.jwt;
 
 import com.example.SchedulingPro.details.CustomOauth2UserDetails;
 import com.example.SchedulingPro.entity.Refresh;
-import com.example.SchedulingPro.entity.RefreshRepository;
+import com.example.SchedulingPro.repository.RefreshRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -44,13 +45,13 @@ public class LoginFilter extends SimpleUrlAuthenticationSuccessHandler {
         String role = auth.getAuthority();
 
         // 토큰 생성
-        String accessToken = jwtUtil.createJwt("access", username, name, 10*60*1000L); // 10분
-        String refreshToken = jwtUtil.createJwt("refresh", username, name, 7*24*60*60*1000L); // 1주일
+        String accessToken = jwtUtil.createJwt("access", username, name, 3600000L); // 1시간
+        String refreshToken = jwtUtil.createJwt("refresh", username, name, 86400000L); // 24시간
 
         log.info("accessToken: " + accessToken);
         log.info("refreshToken: " + refreshToken);
 
-        addRefreshEntity(username, role, 60*60*60*10L);
+        addRefreshEntity(username, refreshToken, 60*60*60*10L);
 
         response.setHeader("Authorization", accessToken);
 

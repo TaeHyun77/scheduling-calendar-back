@@ -1,7 +1,8 @@
 package com.example.SchedulingPro.jwt;
 
 import com.example.SchedulingPro.details.CustomOauth2UserDetails;
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.User;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Slf4j
 @Setter
@@ -50,13 +52,17 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 만료시 다음 필터로 안넘김
-        if (jwtUtil.isExpired(accessToken)) {
-            log.info("token expired");
-            filterChain.doFilter(request, response);
-
+        try {
+            jwtUtil.isExpired(accessToken);
+        } catch (ExpiredJwtException e) {
+            log.info("Access token is expired");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"error\": \"Access token expired\"}");
             return;
         }
+
+        String category = jwtUtil.getCategory(accessToken);
 
         String username = jwtUtil.getUsername(accessToken);
         String role = jwtUtil.getRole(accessToken);

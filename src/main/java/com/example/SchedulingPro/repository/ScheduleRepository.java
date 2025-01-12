@@ -1,7 +1,6 @@
 package com.example.SchedulingPro.repository;
 
-import com.example.SchedulingPro.schedule.Schedule;
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.Schedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,6 @@
-package com.example.SchedulingPro.user;
+package com.example.SchedulingPro.dto;
 
+import com.example.SchedulingPro.entity.User;
 import lombok.Builder;
 import lombok.Data;
 

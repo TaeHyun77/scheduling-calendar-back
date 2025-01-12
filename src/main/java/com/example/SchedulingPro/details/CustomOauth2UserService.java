@@ -1,8 +1,8 @@
 package com.example.SchedulingPro.details;
 
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.User;
 import com.example.SchedulingPro.repository.UserRepository;
-import com.example.SchedulingPro.user.UserRequestDto;
+import com.example.SchedulingPro.dto.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

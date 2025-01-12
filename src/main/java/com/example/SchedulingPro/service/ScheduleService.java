@@ -3,9 +3,9 @@ package com.example.SchedulingPro.service;
 import com.example.SchedulingPro.exception.CustomException;
 import com.example.SchedulingPro.jwt.JwtUtil;
 import com.example.SchedulingPro.repository.ScheduleRepository;
-import com.example.SchedulingPro.schedule.Schedule;
-import com.example.SchedulingPro.schedule.ScheduleDto;
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.Schedule;
+import com.example.SchedulingPro.dto.ScheduleDto;
+import com.example.SchedulingPro.entity.User;
 import com.example.SchedulingPro.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,23 +32,30 @@ public class ScheduleService {
         String accessToken = getAccessTokenFromCookies(request);
 
         String username = jwtUtil.getUsername(accessToken);
-        User user = userRepository.findByUsername(username);
+
+        User user;
+
+        try {
+            user = userRepository.findByUsername(username);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.FAIL_TO_FIND_USER);
+        }
 
         Schedule schedule = scheduleDto.toSchedule();
         schedule.setUser(user);
 
-        System.out.println("Saving schedule: " + schedule.getContent());
-
         scheduleRepository.save(schedule);
     }
 
-    public Schedule getSchedule(Long eventId) {
+    @Transactional
+    public void scheduleModify(Long eventId, ScheduleDto scheduleDto) {
 
-        System.out.println(scheduleRepository.findById(eventId));
-
-        return scheduleRepository.findById(eventId).
+        Schedule schedule = scheduleRepository.findById(eventId).
                 orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.FAIL_TO_FIND_SCHEDULE));
 
+        schedule.updateSchedule(scheduleDto.getTitle(), scheduleDto.getPlace(), scheduleDto.getStart(), scheduleDto.getEnd(), scheduleDto.getContent());
+
+        scheduleRepository.save(schedule);
     }
 
     @Transactional
@@ -64,17 +71,25 @@ public class ScheduleService {
         }
     }
 
+    public Schedule getSchedule(Long eventId) {
+
+        System.out.println(scheduleRepository.findById(eventId));
+
+        return scheduleRepository.findById(eventId).
+                orElseThrow(() -> new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.FAIL_TO_FIND_SCHEDULE));
+    }
+
     public List<Schedule> allSchedule(HttpServletRequest request) {
         String accessToken = getAccessTokenFromCookies(request);
 
         String username = jwtUtil.getUsername(accessToken);
-        User user = userRepository.findByUsername(username);
+        User user;
 
-        if (user == null) {
-            throw new IllegalArgumentException("유효 하지 않은 사용자입니다.");
+        try {
+            user = userRepository.findByUsername(username);
+        } catch (Exception e) {
+            throw new CustomException(HttpStatus.BAD_REQUEST, ErrorCode.FAIL_TO_FIND_USER);
         }
-
-        System.out.println(scheduleRepository.findByUserId(user.getId()));
 
         return scheduleRepository.findByUserId(user.getId());
     }

@@ -1,10 +1,11 @@
 package com.example.SchedulingPro.config;
 
 import com.example.SchedulingPro.details.CustomOauth2UserService;
+import com.example.SchedulingPro.jwt.CustomAuthenticationFailureHandler;
 import com.example.SchedulingPro.jwt.JwtFilter;
 import com.example.SchedulingPro.jwt.JwtUtil;
 import com.example.SchedulingPro.jwt.LoginFilter;
-import com.example.SchedulingPro.entity.RefreshRepository;
+import com.example.SchedulingPro.repository.RefreshRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration; // 인증 관리 설정을 제공하는 객체
     private final JwtUtil jwtUtil;
     private final LoginFilter loginFilter;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     private RefreshRepository refreshRepository;
 
@@ -57,7 +59,8 @@ public class SecurityConfig {
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOauth2UserService))
-                        .successHandler(loginFilter)
+                        .successHandler(loginFilter) // 로그인 성공 시
+                        .failureHandler(customAuthenticationFailureHandler) // 로그인 실패 시
                 )
 
                 .authorizeHttpRequests((auth) -> auth

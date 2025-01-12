@@ -1,6 +1,6 @@
 package com.example.SchedulingPro.details;
 
-import com.example.SchedulingPro.user.User;
+import com.example.SchedulingPro.entity.User;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
