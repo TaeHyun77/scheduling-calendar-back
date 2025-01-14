@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/info")
-    public ResponseEntity<?>  userInfo(HttpServletRequest request) {
+    public ResponseEntity<?> userInfo(HttpServletRequest request) {
 
         String authorizationHeader = request.getHeader("Authorization");
 
